@@ -5,10 +5,10 @@ services:
     image: nginx
     container_name: nginx
     ports:
-      - "443:443"
       - "80:80"
+      - "443:443"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./ssl:/etc/nginx/ssl
     depends_on:
       - video-streaming1
@@ -21,8 +21,10 @@ services:
       context: ./video-streaming
       dockerfile: Dockerfile
     container_name: video-streaming1
+    ports:
+      - "3001:3001"
     environment:
-      - PORT=80
+      - PORT=3001
     restart: "no"
 
   video-streaming2:
@@ -31,8 +33,10 @@ services:
       context: ./video-streaming
       dockerfile: Dockerfile
     container_name: video-streaming2
+    ports:
+      - "3002:3002"
     environment:
-      - PORT=80
+      - PORT=3002
     restart: "no"
 
   video-streaming3:
@@ -41,6 +45,8 @@ services:
       context: ./video-streaming
       dockerfile: Dockerfile
     container_name: video-streaming3
+    ports:
+      - "3003:3003"
     environment:
-      - PORT=80
+      - PORT=3003
     restart: "no"
