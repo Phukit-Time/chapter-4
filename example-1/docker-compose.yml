@@ -1,14 +1,46 @@
 version: '3'
-services:
 
-  video-streaming:
+services:
+  nginx:
+    image: nginx
+    container_name: nginx
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - video-streaming1
+      - video-streaming2
+      - video-streaming3
+
+  video-streaming1:
     image: video-streaming
-    build: 
+    build:
       context: ./video-streaming
       dockerfile: Dockerfile
-    container_name: video-streaming
-    ports:
-     - "4000:80"
+    container_name: video-streaming1
+    environment:
+      - PORT=80
+    restart: "no"
+
+  video-streaming2:
+    image: video-streaming
+    build:
+      context: ./video-streaming
+      dockerfile: Dockerfile
+    container_name: video-streaming2
+    environment:
+      - PORT=80
+    restart: "no"
+
+  video-streaming3:
+    image: video-streaming
+    build:
+      context: ./video-streaming
+      dockerfile: Dockerfile
+    container_name: video-streaming3
     environment:
       - PORT=80
     restart: "no"
